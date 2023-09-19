@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.isands.farmregistryapi.dto.FarmerChangeDto;
-import ru.isands.farmregistryapi.dto.FarmerCreateDto;
-import ru.isands.farmregistryapi.dto.FarmerFullDto;
-import ru.isands.farmregistryapi.dto.FarmerShortDto;
+import ru.isands.farmregistryapi.dto.farmer.FarmerChangeDto;
+import ru.isands.farmregistryapi.dto.farmer.FarmerCreateDto;
+import ru.isands.farmregistryapi.dto.farmer.FarmerFullDto;
+import ru.isands.farmregistryapi.dto.farmer.FarmerShortDto;
 import ru.isands.farmregistryapi.entity.CropArea;
 import ru.isands.farmregistryapi.entity.Farmer;
 import ru.isands.farmregistryapi.entity.Region;
@@ -34,8 +34,7 @@ public class FarmerServiceImpl implements FarmerService {
 
     @Override
     public Collection<FarmerShortDto> getFarmers(Pageable pageable) {
-        return farmerRepository.findAll(pageable)
-                .getContent()
+        return farmerRepository.findAllByStatus(pageable, "active")
                 .stream()
                 .map(farmerMapper::toFarmerShortDto)
                 .collect(Collectors.toList());
@@ -43,7 +42,7 @@ public class FarmerServiceImpl implements FarmerService {
 
     @Override
     public FarmerShortDto getFarmerById(Long farmerId) {
-        Farmer farmer = farmerRepository.findById(farmerId).orElseThrow(() ->
+        Farmer farmer = farmerRepository.findByIdAndStatus(farmerId, "active").orElseThrow(() ->
                 new NotFoundException(String.format("Farmer %s not found", farmerId)));
 
         return farmerMapper.toFarmerShortDto(farmer);
@@ -69,7 +68,7 @@ public class FarmerServiceImpl implements FarmerService {
     @Override
     @Transactional
     public FarmerFullDto changeFarmer(Long farmerId, FarmerChangeDto dto) {
-        Farmer farmer = farmerRepository.findById(farmerId).orElseThrow(() ->
+        Farmer farmer = farmerRepository.findByIdAndStatus(farmerId, "active").orElseThrow(() ->
                 new NotFoundException(String.format("Farmer %s not found", farmerId)));
 
 

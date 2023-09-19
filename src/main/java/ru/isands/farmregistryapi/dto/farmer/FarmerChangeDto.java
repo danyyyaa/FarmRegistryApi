@@ -1,4 +1,4 @@
-package ru.isands.farmregistryapi.dto;
+package ru.isands.farmregistryapi.dto.farmer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class FarmerChangeDto {
+    private Long id;
+
     private String organizationName;
 
     private String organizationalForm;

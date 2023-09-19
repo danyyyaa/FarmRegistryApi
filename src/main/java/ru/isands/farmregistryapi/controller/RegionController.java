@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.isands.farmregistryapi.aspect.ToLog;
-import ru.isands.farmregistryapi.dto.RegionCreateDto;
-import ru.isands.farmregistryapi.dto.RegionFullDto;
-import ru.isands.farmregistryapi.dto.RegionShortDto;
+import ru.isands.farmregistryapi.dto.region.RegionCreateDto;
+import ru.isands.farmregistryapi.dto.region.RegionFullDto;
+import ru.isands.farmregistryapi.dto.region.RegionShortDto;
 import ru.isands.farmregistryapi.service.RegionService;
 import ru.isands.farmregistryapi.util.OffsetBasedPageRequest;
 

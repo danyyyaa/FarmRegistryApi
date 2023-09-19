@@ -2,9 +2,9 @@ package ru.isands.farmregistryapi.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.isands.farmregistryapi.dto.FarmerCreateDto;
-import ru.isands.farmregistryapi.dto.FarmerFullDto;
-import ru.isands.farmregistryapi.dto.FarmerShortDto;
+import ru.isands.farmregistryapi.dto.farmer.FarmerCreateDto;
+import ru.isands.farmregistryapi.dto.farmer.FarmerFullDto;
+import ru.isands.farmregistryapi.dto.farmer.FarmerShortDto;
 import ru.isands.farmregistryapi.entity.CropArea;
 import ru.isands.farmregistryapi.entity.Farmer;
 import ru.isands.farmregistryapi.entity.Region;

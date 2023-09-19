@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.isands.farmregistryapi.dto.RegionCreateDto;
-import ru.isands.farmregistryapi.dto.RegionFullDto;
-import ru.isands.farmregistryapi.dto.RegionShortDto;
+import ru.isands.farmregistryapi.dto.region.RegionCreateDto;
+import ru.isands.farmregistryapi.dto.region.RegionFullDto;
+import ru.isands.farmregistryapi.dto.region.RegionShortDto;
 import ru.isands.farmregistryapi.mapper.RegionMapper;
 import ru.isands.farmregistryapi.repository.RegionRepository;
 

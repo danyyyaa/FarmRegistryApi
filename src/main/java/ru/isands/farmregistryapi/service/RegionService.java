@@ -1,9 +1,9 @@
 package ru.isands.farmregistryapi.service;
 
 import org.springframework.data.domain.Pageable;
-import ru.isands.farmregistryapi.dto.RegionCreateDto;
-import ru.isands.farmregistryapi.dto.RegionFullDto;
-import ru.isands.farmregistryapi.dto.RegionShortDto;
+import ru.isands.farmregistryapi.dto.region.RegionCreateDto;
+import ru.isands.farmregistryapi.dto.region.RegionFullDto;
+import ru.isands.farmregistryapi.dto.region.RegionShortDto;
 
 import java.util.Collection;
 

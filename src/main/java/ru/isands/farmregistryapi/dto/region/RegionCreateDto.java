@@ -1,4 +1,4 @@
-package ru.isands.farmregistryapi.dto;
+package ru.isands.farmregistryapi.dto.region;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
