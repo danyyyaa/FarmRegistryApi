@@ -2,6 +2,7 @@ package ru.isands.farmregistryapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import ru.isands.farmregistryapi.dto.region.RegionFullDto;
 import ru.isands.farmregistryapi.dto.region.RegionShortDto;
 import ru.isands.farmregistryapi.service.RegionService;
 import ru.isands.farmregistryapi.util.OffsetBasedPageRequest;
+import ru.isands.farmregistryapi.validator.ValuesAllowedConstraint;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -31,8 +33,10 @@ public class RegionController {
 
     @GetMapping
     public Collection<RegionShortDto> getRegions(@RequestParam(defaultValue = PAGE_DEFAULT_FROM) @PositiveOrZero Integer from,
-                                                 @RequestParam(defaultValue = PAGE_DEFAULT_SIZE) @Positive Integer size) {
-        Pageable pageable = new OffsetBasedPageRequest(from, size);
+                                                 @RequestParam(defaultValue = PAGE_DEFAULT_SIZE) @Positive Integer size,
+                                                 @ValuesAllowedConstraint(propName = "sort",
+                                                         values = {"name", "code"}) @RequestParam("sort") String sort) {
+        Pageable pageable = new OffsetBasedPageRequest(from, size, Sort.by(Sort.Direction.DESC, sort));
         return regionService.getRegions(pageable);
     }
 
