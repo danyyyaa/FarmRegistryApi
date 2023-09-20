@@ -13,6 +13,7 @@ import ru.isands.farmregistryapi.entity.Farmer;
 import ru.isands.farmregistryapi.entity.Region;
 import ru.isands.farmregistryapi.entity.enums.Status;
 import ru.isands.farmregistryapi.exception.NotFoundException;
+import ru.isands.farmregistryapi.exception.ValidationException;
 import ru.isands.farmregistryapi.mapper.FarmerMapper;
 import ru.isands.farmregistryapi.repository.CropAreaRepository;
 import ru.isands.farmregistryapi.repository.FarmerRepository;
@@ -34,7 +35,7 @@ public class FarmerServiceImpl implements FarmerService {
 
     @Override
     public Collection<FarmerShortDto> getFarmers(Pageable pageable) {
-        return farmerRepository.findAllByStatus(pageable, "active")
+        return farmerRepository.findAllByStatus(pageable, Status.ACTIVE)
                 .stream()
                 .map(farmerMapper::toFarmerShortDto)
                 .collect(Collectors.toList());
@@ -42,7 +43,7 @@ public class FarmerServiceImpl implements FarmerService {
 
     @Override
     public FarmerShortDto getFarmerById(Long farmerId) {
-        Farmer farmer = farmerRepository.findByIdAndStatus(farmerId, "active").orElseThrow(() ->
+        Farmer farmer = farmerRepository.findByIdAndStatus(farmerId, Status.ACTIVE).orElseThrow(() ->
                 new NotFoundException(String.format("Farmer %s not found", farmerId)));
 
         return farmerMapper.toFarmerShortDto(farmer);
@@ -68,7 +69,7 @@ public class FarmerServiceImpl implements FarmerService {
     @Override
     @Transactional
     public FarmerFullDto changeFarmer(Long farmerId, FarmerChangeDto dto) {
-        Farmer farmer = farmerRepository.findByIdAndStatus(farmerId, "active").orElseThrow(() ->
+        Farmer farmer = farmerRepository.findByIdAndStatus(farmerId, Status.ACTIVE).orElseThrow(() ->
                 new NotFoundException(String.format("Farmer %s not found", farmerId)));
 
 
@@ -105,7 +106,8 @@ public class FarmerServiceImpl implements FarmerService {
 
             farmer.setCropAreas(cropAreas);
         }
-        return farmerMapper.toFarmerFullDto(farmer);
+
+        return farmerMapper.toFarmerFullDto(farmerRepository.save(farmer));
     }
 
     @Override
@@ -113,6 +115,10 @@ public class FarmerServiceImpl implements FarmerService {
     public FarmerFullDto archive(Long farmerId) {
         Farmer farmer = farmerRepository.findById(farmerId).orElseThrow(() ->
                 new NotFoundException(String.format("Farmer %s not found", farmerId)));
+
+        if (farmer.getStatus().equals(Status.ARCHIVED)) {
+            throw new ValidationException(String.format("Farmer %s is already in the archive", farmerId));
+        }
 
         farmer.setStatus(Status.ARCHIVED);
 

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import ru.isands.farmregistryapi.entity.enums.Status;
 
 import java.util.Set;
@@ -15,14 +16,17 @@ import java.util.Set;
 public class FarmerChangeDto {
     private Long id;
 
+    @Length(max = 255)
     private String organizationName;
 
+    @Length(max = 255)
     private String organizationalForm;
 
     private Integer inn;
 
     private Integer kpp;
 
+    @Length(max = 255)
     private String ogrn;
 
     private Status status;

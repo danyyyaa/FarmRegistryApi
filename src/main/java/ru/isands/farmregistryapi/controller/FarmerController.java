@@ -2,7 +2,6 @@ package ru.isands.farmregistryapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import ru.isands.farmregistryapi.dto.farmer.FarmerFullDto;
 import ru.isands.farmregistryapi.dto.farmer.FarmerShortDto;
 import ru.isands.farmregistryapi.service.FarmerService;
 import ru.isands.farmregistryapi.util.OffsetBasedPageRequest;
-import ru.isands.farmregistryapi.validator.ValuesAllowedConstraint;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -33,10 +31,8 @@ public class FarmerController {
 
     @GetMapping
     public Collection<FarmerShortDto> getFarmers(@RequestParam(defaultValue = PAGE_DEFAULT_FROM) @PositiveOrZero Integer from,
-                                                 @RequestParam(defaultValue = PAGE_DEFAULT_SIZE) @Positive Integer size,
-                                                 @ValuesAllowedConstraint(propName = "sortBy", values = {"name", "code"})
-                                                 @RequestParam(defaultValue = "name") String sort) {
-        Pageable pageable = new OffsetBasedPageRequest(from, size, Sort.by(Sort.Direction.DESC, sort));
+                                                 @RequestParam(defaultValue = PAGE_DEFAULT_SIZE) @Positive Integer size) {
+        Pageable pageable = new OffsetBasedPageRequest(from, size);
         return farmerService.getFarmers(pageable);
     }
 

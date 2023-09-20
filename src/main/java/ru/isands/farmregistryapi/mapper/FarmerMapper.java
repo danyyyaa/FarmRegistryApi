@@ -11,7 +11,7 @@ import ru.isands.farmregistryapi.entity.Region;
 
 import java.util.Collection;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {RegionMapper.class})
 public interface FarmerMapper {
 
     @Mapping(target = "status", source = "dto.status")
