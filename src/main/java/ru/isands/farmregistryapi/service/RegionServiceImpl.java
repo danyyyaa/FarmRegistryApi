@@ -82,6 +82,9 @@ public class RegionServiceImpl implements RegionService {
 
         List<Farmer> farmers = farmerRepository.findAllByRegionIdAndStatus(regionId, Status.ACTIVE);
 
-        return regionMapper.toRegionFullDto(region, farmers);
+        region.setStatus(Status.ARCHIVED);
+        Region savedRegion = regionRepository.save(region);
+
+        return regionMapper.toRegionFullDto(savedRegion, farmers);
     }
 }

@@ -1,6 +1,7 @@
 package ru.isands.farmregistryapi.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.isands.farmregistryapi.dto.region.RegionCreateDto;
 import ru.isands.farmregistryapi.dto.region.RegionFullDto;
 import ru.isands.farmregistryapi.dto.region.RegionShortDto;
@@ -13,6 +14,7 @@ import java.util.Collection;
 public interface RegionMapper {
     RegionShortDto toRegionShortDto(Region region);
 
+    @Mapping(target = "farmers", source = "farmers")
     RegionFullDto toRegionFullDto(Region region, Collection<Farmer> farmers);
 
     RegionFullDto toRegionFullDto(Region region);

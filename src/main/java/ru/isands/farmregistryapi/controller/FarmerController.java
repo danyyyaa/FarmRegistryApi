@@ -1,5 +1,8 @@
 package ru.isands.farmregistryapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,35 +29,41 @@ import static ru.isands.farmregistryapi.util.Constant.PAGE_DEFAULT_SIZE;
 @RequiredArgsConstructor
 @Validated
 @ToLog
+@Tag(name = "Farmer-controller")
 public class FarmerController {
     private final FarmerService farmerService;
 
     @GetMapping
-    public Collection<FarmerShortDto> getFarmers(@RequestParam(defaultValue = PAGE_DEFAULT_FROM) @PositiveOrZero Integer from,
-                                                 @RequestParam(defaultValue = PAGE_DEFAULT_SIZE) @Positive Integer size) {
+    @Operation(summary = "get all farmers")
+    public Collection<FarmerShortDto> getFarmers(@RequestParam(defaultValue = PAGE_DEFAULT_FROM) @Parameter @PositiveOrZero Integer from,
+                                                 @RequestParam(defaultValue = PAGE_DEFAULT_SIZE) @Parameter @Positive Integer size) {
         Pageable pageable = new OffsetBasedPageRequest(from, size);
         return farmerService.getFarmers(pageable);
     }
 
     @GetMapping("/{farmerId}")
-    public FarmerShortDto getFarmerById(@Positive @PathVariable Long farmerId) {
+    @Operation(summary = "get farmer by id")
+    public FarmerShortDto getFarmerById(@Positive @Parameter @PathVariable Long farmerId) {
         return farmerService.getFarmerById(farmerId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FarmerFullDto createFarmer(@Valid @RequestBody FarmerCreateDto dto) {
+    @Operation(summary = "create farmer")
+    public FarmerFullDto createFarmer(@Valid @RequestBody @Parameter FarmerCreateDto dto) {
         return farmerService.createFarmer(dto);
     }
 
     @PatchMapping("/{farmerId}")
-    public FarmerFullDto changeFarmer(@Positive @PathVariable Long farmerId,
-                                      @RequestBody FarmerChangeDto dto) {
+    @Operation(summary = "change farmer")
+    public FarmerFullDto changeFarmer(@Positive @PathVariable @Parameter Long farmerId,
+                                      @RequestBody @Parameter FarmerChangeDto dto) {
         return farmerService.changeFarmer(farmerId, dto);
     }
 
     @PatchMapping("/{farmerId}/archive")
-    public FarmerFullDto archive(@Positive @PathVariable Long farmerId) {
+    @Operation(summary = "archive")
+    public FarmerFullDto archive(@Positive @Parameter @PathVariable Long farmerId) {
         return farmerService.archive(farmerId);
     }
 }

@@ -1,5 +1,8 @@
 package ru.isands.farmregistryapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,32 +31,38 @@ import static ru.isands.farmregistryapi.util.Constant.PAGE_DEFAULT_SIZE;
 @RequiredArgsConstructor
 @Validated
 @ToLog
+@Tag(name = "Region-controller")
 public class RegionController {
     private final RegionService regionService;
 
     @GetMapping
-    public Collection<RegionShortDto> getRegions(@RequestParam(defaultValue = PAGE_DEFAULT_FROM) @PositiveOrZero Integer from,
-                                                 @RequestParam(defaultValue = PAGE_DEFAULT_SIZE) @Positive Integer size,
+    @Operation(summary = "get all regions")
+    public Collection<RegionShortDto> getRegions(@RequestParam(defaultValue = PAGE_DEFAULT_FROM) @Parameter @PositiveOrZero Integer from,
+                                                 @RequestParam(defaultValue = PAGE_DEFAULT_SIZE) @Parameter @Positive Integer size,
                                                  @ValuesAllowedConstraint(propName = "sort",
-                                                         values = {"name", "code"}) @RequestParam("sort") String sort) {
+                                                         values = {"name", "code"}) @Parameter @RequestParam(value = "sort",
+                                                         defaultValue = "code") String sort) {
         Pageable pageable = new OffsetBasedPageRequest(from, size, Sort.by(Sort.Direction.DESC, sort));
         return regionService.getRegions(pageable);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RegionFullDto createRegion(@Valid @RequestBody RegionCreateDto dto) {
+    @Operation(summary = "create region")
+    public RegionFullDto createRegion(@Valid @Parameter @RequestBody RegionCreateDto dto) {
         return regionService.createRegion(dto);
     }
 
     @PatchMapping("/{regionId}")
-    public RegionFullDto changeRegion(@Positive @PathVariable Long regionId,
-                                      @RequestBody RegionChangeDto dto) {
+    @Operation(summary = "change region")
+    public RegionFullDto changeRegion(@Positive @Parameter @PathVariable Long regionId,
+                                      @RequestBody @Parameter RegionChangeDto dto) {
         return regionService.changeRegion(regionId, dto);
     }
 
     @PatchMapping("/{regionId}/archive")
-    public RegionFullDto archive(@Positive @PathVariable Long regionId) {
+    @Operation(summary = "archive")
+    public RegionFullDto archive(@Positive @Parameter @PathVariable Long regionId) {
         return regionService.archive(regionId);
     }
 }
